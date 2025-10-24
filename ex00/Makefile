@@ -1,6 +1,6 @@
 CC = g++
 CFLAGS = -Werror -Wextra -Wall -std=c++98 -fsanitize=address
-SRC_FILES = main.cpp ScalarConverter.cpp
+SRC_FILES = main.cpp ScalarConverter.cpp MyException.cpp TypeFactory.cpp
 SRC_DIR = src
 OBJ_DIR = obj
 

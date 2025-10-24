@@ -4,6 +4,8 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include "MyException.hpp"
+#include "TypeFactory.hpp"
 	
 /* 
 - static_cast
@@ -12,7 +14,8 @@
 - dynamic_cast
  */
 
-class ScalarConverter {
+class ScalarConverter
+{
     public:
         ScalarConverter();
         ~ScalarConverter();

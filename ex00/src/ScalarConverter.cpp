@@ -2,35 +2,54 @@
 
 
 
-static std::ostringstream &castCharToOss(char c)
+
+static std::ostringstream &castToOss(const std::string &s, TypeFactory &self, TypeFactory::eType type)
 {
     static std::ostringstream oss;
+    std::stringstream ss(s);
 
-    if (!oss.str().empty())
-        oss.str("");
-    oss.clear();
-    oss << "char: '" << c << "'" << std::endl;
-    oss << "int: " << static_cast<int>(c) << std::endl;
-    oss << "float: " << static_cast<float>(c) << ".0f" << std::endl;
-    oss << "double: " << static_cast<double>(c) << ".0" << std::endl;
+    if (ss.fail())
+        throw MyException("Error: Invalid character input.");
+    switch (type)
+    {
+        case TypeFactory::CHAR:
+            char c; ss >> c;
+            oss << self.castCharToString(c);
+            break;
+        case TypeFactory::INT:
+            int i; ss >> i;
+            oss << self.castIntToString(i);
+            break;
+        case TypeFactory::FLOAT:
+            float f; ss >> f;
+            oss << self.castFloatToString(f);
+            break;
+        case TypeFactory::DOUBLE:
+            double d; ss >> d;
+            oss << self.castDoubleToString(d);
+            break;
+        default:
+            throw MyException("Error: Unknown type for conversion.");
+    }
     return (oss);
 }
 
 void ScalarConverter::convert(const std::string &s)
 {
-    std::stringstream ss(s);
-    char c;
+    TypeFactory::eType    _detectedType;
+    TypeFactory          _typeFactory;
 
-    for (size_t i = 0; i < s.length(); ++i)
-    {
-        if (!isprint(s[i]) && !isspace(s[i]))
-        {
-            std::cout << "char: impossible" << std::endl;
-            return ;
-        }
+    try {
+        _detectedType = _typeFactory.detectType(s);
+        if (_detectedType == TypeFactory::NONE)
+            throw MyException("Error: IMPOSSIBLE");
+        std::ostringstream &oss = castToOss(s, _typeFactory, _detectedType);
+        std::cout << oss.str();
+        return ;
+    } catch (const MyException &e) {
+        std::cout << e.what() << std::endl;
+        return ;
     }
-    ss >> c;
-    std::cout << castCharToOss(c).str() << std::endl;
 }
 
 // Default constructor
@@ -49,7 +68,9 @@ ScalarConverter::ScalarConverter(const ScalarConverter &other)
 // Assignment operator overload
 ScalarConverter &ScalarConverter::operator=(const ScalarConverter &other)
 {
-    (void) other;
+    if (this != &other)
+    {
+    }
     return (*this);
 }
 
