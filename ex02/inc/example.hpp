@@ -1,0 +1,1 @@
+// This header file contains declarations for functions or classes used in the main.cpp of exercise 02.
