@@ -26,7 +26,6 @@ public:
     TypeFactory &operator=(const TypeFactory &other);
     ~TypeFactory();
 
-    // Ahora detectType es no estático
     eType detectType(const std::string &str);
 
     // Métodos de casteo accesibles vía objeto
@@ -36,7 +35,6 @@ public:
     std::string castDoubleToString(double d) const;
 
 private:
-    // Parsers siguen estáticos
     static eType parseChar(const std::string &str);
     static eType parseInt(const std::string &str);
     static eType parseFloat(const std::string &str);
