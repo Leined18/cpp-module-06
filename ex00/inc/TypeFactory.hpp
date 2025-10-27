@@ -6,6 +6,8 @@
 #include <string>
 #include <cctype>
 #include "MyException.hpp"
+#include <limits>
+#include <cmath>
 
 class TypeFactory
 {
@@ -16,6 +18,7 @@ public:
         INT,
         FLOAT,
         DOUBLE,
+        PSEUDO_LITERAL,
         MAX
     };
 
@@ -29,12 +32,22 @@ public:
     eType detectType(const std::string &str);
 
     // Métodos de casteo accesibles vía objeto
-    std::string castCharToString(char c) const;
-    std::string castIntToString(int i) const;
-    std::string castFloatToString(float f) const;
-    std::string castDoubleToString(double d) const;
+    std::string castCharToString(double value  ) const;
+    std::string castIntToString(double value   ) const;
+    std::string castFloatToString(double value ) const;
+    std::string castDoubleToString(double value) const;
+
+    std::string buildCastOutput(double value) const;
+    std::string castToString(const std::string &str, eType type) const;
+
+    // Métodos de chequeo como funciones miembro const
+    std::string buildString(const std::string &prefix,
+        const std::string &valueStr, bool valid = true,
+        const std::string &errorMsg = "Error: Valor inválido.\n") const;
+
 
 private:
+    
     static eType parseChar(const std::string &str);
     static eType parseInt(const std::string &str);
     static eType parseFloat(const std::string &str);
