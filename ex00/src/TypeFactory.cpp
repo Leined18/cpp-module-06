@@ -185,7 +185,7 @@ std::string TypeFactory::castToString(const std::string &str, eType type) const 
             case CHAR: { char c; ss >> c; value = static_cast<double>(c); break; }
             case INT: { double i; ss >> i; value = static_cast<double>(i); break; }
             case FLOAT: { double f; ss >> f; value = static_cast<double>(f); break; }
-            case DOUBLE: { double d; ss >> d; value = d; break; }
+            case DOUBLE: { double d; ss >> d; value = static_cast<double>(d); break; }
             default: throw MyException("Error: Type incompatible."); 
         }
     }
