@@ -114,15 +114,14 @@ std::string TypeFactory::buildString(const std::string &prefix,
 // Cast helpers
 // =======================
 std::string TypeFactory::castCharToString(double value) const {
-    bool isPrintable = std::isfinite(value) && std::isprint(static_cast<char>(value));
+    bool isPrintable = std::isprint(static_cast<char>(value));
     char c = isPrintable ? static_cast<char>(value) : 0;
     return buildString("char: ", std::string(1, c), isPrintable, "char: imposible.\n");
 }
 
 std::string TypeFactory::castIntToString(double value) const {
-    bool isIntConvertible = std::isfinite(value) &&
-                             value >= std::numeric_limits<int>::min() &&
-                             value <= std::numeric_limits<int>::max();
+    bool isIntConvertible =  value > std::numeric_limits<int>::min() &&
+                             value < std::numeric_limits<int>::max();
     int i = isIntConvertible ? static_cast<int>(value) : 0;
     std::ostringstream oss;
     oss << i;
@@ -130,11 +129,11 @@ std::string TypeFactory::castIntToString(double value) const {
 }
 
 std::string TypeFactory::castFloatToString(double value) const {
-    bool isPrintable = std::isfinite(value) &&
-                       value >= -std::numeric_limits<float>::max() &&
-                       value <= std::numeric_limits<float>::max();
+    bool isPrintable = value > -std::numeric_limits<float>::max() &&
+                       value < std::numeric_limits<float>::max();
+    isPrintable = isPrintable || std::isnan(value) || std::isinf(value);
     std::ostringstream oss;
-    if (std::isnan(value)) oss << "nanf";
+    if (std::isnan(value)) oss << value << "f";
     else if (std::isinf(value)) oss << (value < 0 ? "-inff" : "+inff");
     else {
         float f = static_cast<float>(value);
@@ -146,11 +145,11 @@ std::string TypeFactory::castFloatToString(double value) const {
 }
 
 std::string TypeFactory::castDoubleToString(double value) const {
-    bool isPrintable = std::isfinite(value) &&
-                       value > -std::numeric_limits<double>::max() &&
+    bool isPrintable = value > -std::numeric_limits<double>::max() &&
                        value < std::numeric_limits<double>::max();
+    isPrintable = isPrintable || std::isnan(value) || std::isinf(value);
     std::ostringstream oss;
-    if (std::isnan(value)) oss << "nan";
+    if (std::isnan(value)) oss << value;
     else if (std::isinf(value)) oss << (value < 0 ? "-inf" : "+inf");
     else {
         oss << value;
@@ -184,8 +183,8 @@ std::string TypeFactory::castToString(const std::string &str, eType type) const 
         std::istringstream ss(str);
         switch (type) {
             case CHAR: { char c; ss >> c; value = static_cast<double>(c); break; }
-            case INT: { double i; ss >> i; value = i; break; }
-            case FLOAT: { double f; ss >> f; value = f; break; }
+            case INT: { double i; ss >> i; value = static_cast<double>(i); break; }
+            case FLOAT: { double f; ss >> f; value = static_cast<double>(f); break; }
             case DOUBLE: { double d; ss >> d; value = d; break; }
             default: throw MyException("Error: Type incompatible."); 
         }
