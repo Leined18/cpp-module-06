@@ -8,7 +8,7 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    ScalarConverter converter;
-    converter.convert(argv[1]);
+    // No instance allowed; call static method directly
+    ScalarConverter::convert(argv[1]);
     return 0;
 }

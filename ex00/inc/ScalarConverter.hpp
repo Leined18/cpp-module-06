@@ -6,7 +6,7 @@
 #include <sstream>
 #include "MyException.hpp"
 #include "TypeFactory.hpp"
-	
+    
 /* 
 - static_cast
 - const_cast
@@ -16,11 +16,14 @@
 
 class ScalarConverter
 {
-    public:
+    private:
+        // Prevent instantiation and copying (C++98 style)
         ScalarConverter();
         ~ScalarConverter();
         ScalarConverter(const ScalarConverter &other);
         ScalarConverter &operator=(const ScalarConverter &other);
+
+    public:
         static void convert(const std::string &s);
 };
 
