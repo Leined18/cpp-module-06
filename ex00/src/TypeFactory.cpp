@@ -114,26 +114,28 @@ std::string TypeFactory::buildString(const std::string &prefix,
 // Cast helpers
 // =======================
 std::string TypeFactory::castCharToString(double value) const {
-    bool isPrintable = std::isprint(static_cast<char>(value));
+    bool isPrintable = std::isfinite(value) && std::isprint(static_cast<char>(value));
     char c = isPrintable ? static_cast<char>(value) : 0;
-    return buildString("char: ", std::string(1, c), isPrintable, "char: imposible.\n");
+    return buildString("char: ", "'" + std::string(1, c) + "'", isPrintable, "char: Non displayable.\n");
 }
 
 std::string TypeFactory::castIntToString(double value) const {
-    bool isIntConvertible =  value > std::numeric_limits<int>::min() &&
-                             value < std::numeric_limits<int>::max();
+    bool isIntConvertible = std::isfinite(value) &&
+                             value >= std::numeric_limits<int>::min() &&
+                             value <= std::numeric_limits<int>::max();
     int i = isIntConvertible ? static_cast<int>(value) : 0;
     std::ostringstream oss;
     oss << i;
-    return buildString("int: ", oss.str(), isIntConvertible, "int: imposible.\n");
+    return buildString("int: ", oss.str(), isIntConvertible, "int: Non displayable.\n");
 }
 
 std::string TypeFactory::castFloatToString(double value) const {
-    bool isPrintable = value > -std::numeric_limits<float>::max() &&
-                       value < std::numeric_limits<float>::max();
-    isPrintable = isPrintable || std::isnan(value) || std::isinf(value);
+    bool isPrintable = std::isfinite(value) &&
+                       value >= -std::numeric_limits<float>::max() &&
+                       value <= std::numeric_limits<float>::max();
     std::ostringstream oss;
-    if (std::isnan(value)) oss << value << "f";
+    isPrintable = isPrintable || std::isnan(value) || std::isinf(value);
+    if (std::isnan(value)) oss << "nanf";
     else if (std::isinf(value)) oss << (value < 0 ? "-inff" : "+inff");
     else {
         float f = static_cast<float>(value);
@@ -141,21 +143,22 @@ std::string TypeFactory::castFloatToString(double value) const {
         if (f == static_cast<int>(f)) oss << ".0";
         oss << "f";
     }
-    return buildString("float: ", oss.str(), isPrintable, "float: imposible.\n");
+    return buildString("float: ", oss.str(), isPrintable, "float: Non displayable.\n");
 }
 
 std::string TypeFactory::castDoubleToString(double value) const {
-    bool isPrintable = value > -std::numeric_limits<double>::max() &&
+    bool isPrintable = std::isfinite(value) &&
+                       value > -std::numeric_limits<double>::max() &&
                        value < std::numeric_limits<double>::max();
-    isPrintable = isPrintable || std::isnan(value) || std::isinf(value);
     std::ostringstream oss;
-    if (std::isnan(value)) oss << value;
+    isPrintable = isPrintable || std::isnan(value) || std::isinf(value);
+    if (std::isnan(value)) oss << "nan";
     else if (std::isinf(value)) oss << (value < 0 ? "-inf" : "+inf");
     else {
         oss << value;
         if (value == static_cast<int>(value)) oss << ".0";
     }
-    return buildString("double: ", oss.str(), isPrintable, "double: imposible.\n");
+    return buildString("double: ", oss.str(), isPrintable, "double: Non displayable.\n");
 }
 
 // =======================
@@ -183,9 +186,9 @@ std::string TypeFactory::castToString(const std::string &str, eType type) const 
         std::istringstream ss(str);
         switch (type) {
             case CHAR: { char c; ss >> c; value = static_cast<double>(c); break; }
-            case INT: { double i; ss >> i; value = static_cast<double>(i); break; }
-            case FLOAT: { double f; ss >> f; value = static_cast<double>(f); break; }
-            case DOUBLE: { double d; ss >> d; value = static_cast<double>(d); break; }
+            case INT: { double i; ss >> i; value = i; break; }
+            case FLOAT: { double f; ss >> f; value = f; break; }
+            case DOUBLE: { double d; ss >> d; value = d; break; }
             default: throw MyException("Error: Type incompatible."); 
         }
     }
