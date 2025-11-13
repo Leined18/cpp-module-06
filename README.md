@@ -1,4 +1,4 @@
-````markdown
+
 # C++ - Module 06  
 ### C++ Casts and Type Identification
 
@@ -49,7 +49,6 @@ Para compilar, entra al directorio correspondiente y ejecuta:
 
 ```bash
 make
-````
 
 Para limpiar los archivos objeto:
 
@@ -97,5 +96,3 @@ Es una base esencial para los siguientes módulos de programación orientada a o
 
 ---
 
-```
-```
