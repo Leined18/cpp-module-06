@@ -1,55 +1,101 @@
-# C++ Exercises
+````markdown
+# C++ - Module 06  
+### C++ Casts and Type Identification
 
-This project contains a series of C++ exercises designed to help you practice and improve your programming skills. Each exercise is contained within its own directory, following a consistent structure.
+Este módulo enseña los diferentes tipos de *casts* en C++, cómo funcionan las conversiones entre tipos, y cómo identificar el tipo real de un objeto en tiempo de ejecución.
 
-## Directory Structure
+---
 
-- **ex00**: Contains the first exercise.
-  - **inc**: Header files for exercise 00.
-  - **src**: Source files for exercise 00.
-  - **obj**: Directory for object files generated during compilation.
-  - **Makefile**: Build instructions for exercise 00.
+## 📘 Ejercicios
 
-- **ex01**: Contains the second exercise.
-  - **inc**: Header files for exercise 01.
-  - **src**: Source files for exercise 01.
-  - **obj**: Directory for object files generated during compilation.
-  - **Makefile**: Build instructions for exercise 01.
+### **ex00 — Conversion of Scalar Types**
+Aprendes a convertir valores escalares (`char`, `int`, `float`, `double`) a partir de una cadena de texto.
 
-- **ex02**: Contains the third exercise.
-  - **inc**: Header files for exercise 02.
-  - **src**: Source files for exercise 02.
-  - **obj**: Directory for object files generated during compilation.
-  - **Makefile**: Build instructions for exercise 02.
+- Detección del tipo de literal.
+- Conversión entre tipos básicos usando `static_cast`.
+- Manejo de literales especiales (`nan`, `+inf`, `-inf`).
+- Validación de conversiones imposibles o fuera de rango.
 
-- **ex03**: Contains the fourth exercise.
-  - **inc**: Header files for exercise 03.
-  - **src**: Source files for exercise 03.
-  - **obj**: Directory for object files generated during compilation.
-  - **Makefile**: Build instructions for exercise 03.
+**Concepto clave:** Uso correcto de `static_cast`.
 
-## Compilation Instructions
+---
 
-Each exercise can be compiled using the provided Makefile located in its respective directory. To compile an exercise, navigate to the exercise directory and run:
+### **ex01 — Serialization**
+Aprendes a convertir un puntero a un número entero y viceversa, sin perder la referencia original.
 
-```
+- Implementación de métodos estáticos `serialize()` y `deserialize()`.
+- Conversión con `reinterpret_cast` y tipo `uintptr_t`.
+- Verificación de que las direcciones de memoria coincidan.
+
+**Concepto clave:** Uso de `reinterpret_cast`.
+
+---
+
+### **ex02 — Identify Real Type**
+Aprendes a identificar el tipo real de un objeto derivado a través de un puntero o una referencia a la clase base.
+
+- Creación de una jerarquía de clases (`Base`, `A`, `B`, `C`).
+- Identificación de tipos con `dynamic_cast`.
+- Evitar `typeid` y `std::typeinfo`.
+
+**Concepto clave:** Uso de `dynamic_cast` y comprensión del polimorfismo.
+
+---
+
+## ⚙️ Compilación
+
+Cada ejercicio tiene su propio `Makefile`.  
+Para compilar, entra al directorio correspondiente y ejecuta:
+
+```bash
 make
-```
+````
 
-To clean up the object files, you can run:
+Para limpiar los archivos objeto:
 
-```
+```bash
 make clean
 ```
 
-## Flags Used
+---
 
-The following compilation flags are used in the Makefiles:
+## 🚩 Flags usadas
 
-- `-Werror`: Treat warnings as errors.
-- `-Wextra`: Enable additional warnings.
-- `-Wall`: Enable all standard warnings.
-- `-std=c++98`: Use the C++98 standard.
-- `-fsanitize=address`: Enable address sanitization for detecting memory errors.
+```
+-Wall -Wextra -Werror -std=c++98 -fsanitize=address
+```
 
-Feel free to explore each exercise and modify the code as you see fit! Happy coding!
+Estas garantizan código limpio, conforme al estándar C++98, y ayudan a detectar errores de memoria.
+
+---
+
+## 🎯 Qué aprendes
+
+* Los cuatro *casts* de C++:
+  `static_cast`, `reinterpret_cast`, `const_cast`, `dynamic_cast`
+* Polimorfismo y herencia.
+* Gestión segura de memoria.
+* Aplicación de principios SOLID y KISS en diseño de clases.
+
+---
+
+## 🧮 Tipos de Cast en C++
+
+| Tipo de cast       | Descripción breve                                       | Uso principal                                                     |
+| ------------------ | ------------------------------------------------------- | ----------------------------------------------------------------- |
+| `static_cast`      | Conversión segura entre tipos compatibles.              | Conversiones básicas entre tipos escalares o clases relacionadas. |
+| `reinterpret_cast` | Reinterpreta los bits de un tipo como otro.             | Conversión de punteros o referencias sin cambiar los bits.        |
+| `const_cast`       | Quita o añade la cualidad `const` a un objeto.          | Cuando se necesita modificar un valor pasado como `const`.        |
+| `dynamic_cast`     | Realiza conversiones seguras en jerarquías de herencia. | Identificación del tipo real de un objeto polimórfico.            |
+
+---
+
+## 🏁 Conclusión
+
+El módulo 06 te enseña a realizar conversiones seguras entre tipos y a entender cómo C++ gestiona la memoria y la información de tipos.
+Es una base esencial para los siguientes módulos de programación orientada a objetos.
+
+---
+
+```
+```
